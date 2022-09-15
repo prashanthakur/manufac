@@ -3,29 +3,36 @@ import ReactECharts from "echarts-for-react";
 import { chartjson } from "./chartjson";
 
 const Charts = () => {
-  //   const categoriesArr = chartjson.map((each) => each.Alcohol);
-  //   let uniqueCategoriesArr = [...new Set(categoriesArr)];
-  //   console.log(uniqueCategoriesArr);
+  const totalAlcoholClasses = chartjson.map((each) => each.Alcohol); //total alcohol classes in array
+  const uniqueAlcoholClassTypes = [...new Set(totalAlcoholClasses)]; //unified alcohol classes by removing duplicate classes
 
-  //   const categoryArr=chartjson.filter(each=>each.Alcohol===)
+  //classifying data alcohol class wise in array
+  const classwiseArrData = uniqueAlcoholClassTypes.map((eachClass) => {
+    //filtering data based on class
+    const filteredArr = chartjson.filter((each) => each.Alcohol === eachClass);
+    return filteredArr;
+  });
 
-  const category1 = chartjson.filter((each) => each.Alcohol === 1);
-  const category2 = chartjson.filter((each) => each.Alcohol === 2);
-  const category3 = chartjson.filter((each) => each.Alcohol === 3);
-  console.log(category3);
+  console.log(classwiseArrData);
 
-  //function to calculate average malic acid for each category
+  //function to calculate avg malic acid when input is data of each class
   const calculateAvgMalic = (arr) => {
+    //taking out only malic acids data from whole data in array
     const malicAcidArr = arr.map((each) => each.MalicAcid);
     const lengthOfArr = malicAcidArr.length;
-    const totalMalicAcidArr1 = malicAcidArr.reduce((a, b) => a + b);
-    const avgMalic = totalMalicAcidArr1 / lengthOfArr;
+    //calculating total malic accid of each class
+    const totalMalicAcidValue = malicAcidArr.reduce((a, b) => a + b);
+    const avgMalic = totalMalicAcidValue / lengthOfArr;
     return avgMalic;
   };
 
-  const category1AvgMalic = calculateAvgMalic(category1);
-  const category2AvgMalic = calculateAvgMalic(category2);
-  const category3AvgMalic = calculateAvgMalic(category3);
+  //pushing avg malic acid of each class in empty array
+  const avgMalicClassWiseInArr = [];
+  classwiseArrData.forEach((eachCategory) => {
+    const classWiseAvgMalic = calculateAvgMalic(eachCategory);
+    avgMalicClassWiseInArr.push(classWiseAvgMalic);
+  });
+  console.log(avgMalicClassWiseInArr);
 
   const barOption = {
     xAxis: {
@@ -39,19 +46,17 @@ const Charts = () => {
     },
     series: [
       {
-        data: [category1AvgMalic, category2AvgMalic, category3AvgMalic],
+        data: avgMalicClassWiseInArr,
         type: "bar",
       },
     ],
   };
 
   const newArray1 = [];
-  const colorIntensityArr = chartjson.forEach((each) => {
+  chartjson.forEach((each) => {
     const individualArr = [each.ColorIntensity, each.Hue];
     newArray1.push(individualArr);
   });
-
-  console.log(newArray1);
 
   const scatterOption = {
     xAxis: {
