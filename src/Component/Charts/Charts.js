@@ -32,12 +32,11 @@ const Charts = () => {
     const classWiseAvgMalic = calculateAvgMalic(eachCategory);
     avgMalicClassWiseInArr.push(classWiseAvgMalic);
   });
-  console.log(avgMalicClassWiseInArr);
 
   const barOption = {
     xAxis: {
       type: "category",
-      data: ["1", "2", "3"],
+      data: uniqueAlcoholClassTypes,
       name: "Alcohol category",
     },
     yAxis: {
@@ -61,12 +60,12 @@ const Charts = () => {
   const scatterOption = {
     xAxis: {
       type: "value",
-      data: ["1", "2", "3"],
+      data: uniqueAlcoholClassTypes,
       name: "Color Intensity",
     },
     yAxis: {
       type: "value",
-      data: ["1", "2", "3"],
+      data: uniqueAlcoholClassTypes,
       name: "Hue",
     },
     series: [
